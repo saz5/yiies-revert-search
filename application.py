@@ -4,22 +4,22 @@ from towhee import pipe, ops
 from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
-CORS(app)
+application = Flask(__name__)
+CORS(application )
 
 # Configure upload folder and allowed extensions
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application .config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)\
+    os.makedirs(UPLOAD_FOLDER)
     
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET'])
-@app.route('/health', methods=['GET'])
+@application.route('/', methods=['GET'])
+@application.route('/health', methods=['GET'])
 def home():
     return jsonify({'message': 'Welcome to the Flask REST API!'})
 
@@ -30,7 +30,7 @@ def home():
 
 
 # Endpoint to receive a video file
-@app.route('/create-video-embeddings', methods=['POST'])
+@application.route('/create-video-embeddings', methods=['POST'])
 def upload_video():
     post_id = request.form.get('post_id')
     if not post_id:
@@ -45,9 +45,9 @@ def upload_video():
     
     if not file or not allowed_file(file.filename):
         return jsonify({'error': 'Not allowed file type'}), 400
-    
-    filename = secure_filename(f"{'post_id'}_{file.filename}")
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    filename = secure_filename(f"{post_id}_{file.filename}")
+    filepath = os.path.join(application.config['UPLOAD_FOLDER'], filename)
     file.save(filepath)
 
     query_pipe = (
@@ -66,5 +66,5 @@ def upload_video():
     return jsonify({'embedding': result_data}), 200
 
 
-if __name__ == '__main__':
-    app.run( debug=True, port=5001 )
+if __name__ == "__main__":
+    application .run(host='0.0.0.0', port=8025)

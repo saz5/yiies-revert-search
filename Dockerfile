@@ -1,5 +1,5 @@
 # Use a slim Python 3.9 image as the base
-FROM python:3.9-slim-buster
+FROM python:3.9-slim-bullseye
 
 # Set the working directory in the container
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port the Flask app will run on
-EXPOSE 5001
+EXPOSE 8025
 
 # Command to run the application
-CMD ["python", "app.py"]
+CMD ["python", "application.py"]

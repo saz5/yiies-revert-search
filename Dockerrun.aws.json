@@ -1,0 +1,12 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "641679304000.dkr.ecr.us-east-2.amazonaws.com/yiies-revert-search-prod:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8025"
+    }
+  ]
+}

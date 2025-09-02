@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
 
 application = Flask(__name__)
+application.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 Megabytes
 CORS(application )
 
 # Configure upload folder and allowed extensions
@@ -112,5 +113,5 @@ def test_create_image_embedding():
 
 
 if __name__ == "__main__":
-    application.run(host='0.0.0.0', port=8025)
-    # application.run(host='localhost', port=5001)
+    # application.run(host='0.0.0.0', port=8025)
+    application.run(host='localhost', port=5001, debug=True)

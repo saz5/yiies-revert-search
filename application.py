@@ -113,5 +113,5 @@ def test_create_image_embedding():
 
 
 if __name__ == "__main__":
-    # application.run(host='0.0.0.0', port=8025)
-    application.run(host='localhost', port=5001, debug=True)
+    application.run(host='0.0.0.0', port=8025)
+    # application.run(host='localhost', port=5001, debug=True)

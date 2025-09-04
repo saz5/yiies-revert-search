@@ -71,7 +71,7 @@ def create_image_embeddings():
     if not post_id:
         return jsonify({'error': 'Post_id not specified'}), 400
 
-    if 'video' not in request.files:
+    if 'image' not in request.files:
         return jsonify({'error': 'File no found'}), 400
     
     file = request.files['image']
@@ -91,11 +91,14 @@ def create_image_embeddings():
         .map('url', 'img', ops.image_decode.cv2_rgb())
         # .map('img', 'vec', ops.image_text_embedding.clip(model_name='clip_vit_base_patch16', modality='image'))
         .map('img', 'vec', ops.image_embedding.timm(model_name='resnet50'))
+        .map('vec', 'vec', lambda vec: vec.tolist() )
         .output('vec')
     )
     result = img_pipe(filepath)
 
     result_data = result.get()[0]
+
+    os.remove(filepath)
     return jsonify({ 'post_id': post_id, 'embedding': result_data }), 200
 
 
